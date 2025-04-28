@@ -1,11 +1,11 @@
-# HILL CIPHER
-HILL CIPHER
-EX. NO: 3 AIM:
- 
-
-IMPLEMENTATION OF HILL CIPHER
- 
-## To write a C program to implement the hill cipher substitution techniques.
+# CRYPTOGRAPHY
+## HILL CIPHER
+## EX. NO: 1(C) AIM:
+## IMPLEMENTATION OF HILL CIPHER
+## GOWTHAM V 
+## 212223100009
+## To write a C program to implement the hill cipher substituti
+on techniques.
 
 ## DESCRIPTION:
 
@@ -29,7 +29,95 @@ STEP-4: Multiply the two matrices to obtain the cipher text of length three.
 STEP-5: Combine all these groups to get the complete cipher text.
 
 ## PROGRAM 
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define SIZE 2  // Size of the key matrix (2x2 for simplicity)
+
+int keyMatrix[SIZE][SIZE];
+
+void toUpperCase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = toupper(str[i]);
+    }
+}
+
+void removeSpaces(char *str) {
+    int count = 0;
+    for (int i = 0; str[i]; i++) {
+        if (str[i] != ' ') {
+            str[count++] = str[i];
+        }
+    }
+    str[count] = '\0';
+}
+
+void getKeyMatrix(char *key) {
+    int k = 0;
+    toUpperCase(key);
+    removeSpaces(key);
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            keyMatrix[i][j] = key[k++] - 'A';
+        }
+    }
+}
+
+void encrypt(char *text, char *cipher) {
+    toUpperCase(text);
+    removeSpaces(text);
+    int len = strlen(text);
+    if (len % SIZE != 0) {
+        text[len++] = 'X';  // Padding if needed
+        text[len] = '\0';
+    }
+    
+    for (int i = 0; i < len; i += SIZE) {
+        for (int row = 0; row < SIZE; row++) {
+            int sum = 0;
+            for (int col = 0; col < SIZE; col++) {
+                sum += keyMatrix[row][col] * (text[i + col] - 'A');
+            }
+            cipher[i + row] = (sum % 26) + 'A';
+        }
+    }
+    cipher[len] = '\0';
+}
+
+void printKeyMatrix() {
+    printf("Key Matrix:\n");
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%d ", keyMatrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    char key[SIZE * SIZE + 1], text[100], cipher[100];
+    
+    printf("Enter key (4 letters): ");
+    scanf("%s", key);
+    getKeyMatrix(key);
+    printKeyMatrix();
+    
+    printf("Enter plaintext: ");
+    scanf("%s", text);
+    
+    encrypt(text, cipher);
+    printf("Ciphertext: %s\n", cipher);
+    
+    return 0;
+}
+```
 
 ## OUTPUT
 
+![Screenshot 2025-04-28 092257](https://github.com/user-attachments/assets/97d19219-5426-4df7-9f70-228af9729dd4)
+
+
 ## RESULT
+The program is executed successfully.
